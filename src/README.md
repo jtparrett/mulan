@@ -1,2 +1,2 @@
 ## Babel Compiler
-`babel src/index.js --out-file dist/mulan.js --presets=es2015`
+`babel src/index.js --out-file index.js --presets=es2015`
