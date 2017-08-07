@@ -16,7 +16,7 @@ class Root {
     let nextId = 0
     function el(component, props){
       const _id = nextId++
-      const comp = _root._componentRegister[_id] = (_root._componentRegister[_id] || new component({...props,_id,_root}))
+      const comp = _root._componentRegister[_id] = (_root._componentRegister[_id] || new component(Object.assign({_id,_root}, props)))
       return comp.render(el, props)
     }
     this._componentRegister.forEach(comp => comp._reset())
