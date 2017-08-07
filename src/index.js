@@ -1,6 +1,6 @@
 window._rootRegister = []
 
-class Root {
+export class Root {
   constructor(element, component, props) {
     const _id = _rootRegister.length
     _rootRegister[_id] = this
@@ -24,7 +24,7 @@ class Root {
   }
 }
 
-class Component {
+export class Component {
   constructor(props) {
     this.state = {}
     this.props = props
