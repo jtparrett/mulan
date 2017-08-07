@@ -39,3 +39,5 @@ new Root(document.getElementById('app'), App, {
   title: 'Mulan Test App'
 })
 ```
+
+![Mulan](mulan.jpg)
