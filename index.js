@@ -10,7 +10,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 window._rootRegister = [];
 
-var Root = function () {
+var Root = exports.Root = function () {
   function Root(element, component, props) {
     _classCallCheck(this, Root);
 
@@ -44,7 +44,7 @@ var Root = function () {
   return Root;
 }();
 
-var Component = function () {
+var Component = exports.Component = function () {
   function Component(props) {
     _classCallCheck(this, Component);
 
@@ -77,8 +77,3 @@ var Component = function () {
 
   return Component;
 }();
-
-exports.default = {
-  Root: Root,
-  Component: Component
-};
