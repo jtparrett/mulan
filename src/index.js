@@ -1,6 +1,6 @@
 window._rootRegister = []
 
-class Root {
+export class Root {
   constructor(element, component, props) {
     const _id = _rootRegister.length
     _rootRegister[_id] = this
@@ -24,7 +24,7 @@ class Root {
   }
 }
 
-class Component {
+export class Component {
   constructor(props) {
     this.state = {}
     this.props = props
@@ -44,9 +44,4 @@ class Component {
     this._eventRegister[_id] = this._eventRegister[_id] || props
     return `window._rootRegister[${this.props._root._id}]._componentRegister[${this.props._id}]['${method}'](${['this', `window._rootRegister[${this.props._root._id}]._componentRegister[${this.props._id}]._eventRegister[${_id}]`]})`
   }
-}
-
-export default {
-  Root,
-  Component
 }
