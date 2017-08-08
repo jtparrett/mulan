@@ -7,62 +7,56 @@ document.Mulan = document.Mulan || {
 
 export class Root {
   constructor(element, component, props) {
-    const _id = document.Mulan._rootRegister.length
-    document.Mulan._rootRegister[_id] = this
-    this._id = _id
-    this.element = element
-    this.component = component
-    this.props = props
-    this._componentRegister = []
-    this._registerComponent.bind(this)
-    this.render()
-  }
-  _registerComponent(component, _id){
-    if(this._componentRegister[_id]){
-      if(this._componentRegister[_id].constructor === component.constructor){
-        return this._componentRegister[_id]
+    const _id = this._id = document.Mulan._rootRegister.length
+    const _root = document.Mulan._rootRegister[_id] = this
+    const _componentRegister = this._componentRegister = []
+    function _registerComponent(component, _id){
+      if(_componentRegister[_id]){
+        if(_componentRegister[_id].constructor === component.constructor){
+          return _componentRegister[_id]
+        } else {
+          return _registerComponent(component, _id+0.1)
+        }
       } else {
-        return this._registerComponent(component, _id + 0.1)
+        return _componentRegister[_id] = component._setId(_id)
       }
-    } else {
-      return this._componentRegister[_id] = component._setId(_id)
     }
-  }
-  render(){
-    const _root = this
-    let nextId = 0
-    function el(component, props){
-      const comp = _root._registerComponent(new component(Object.assign({_root}, props)), nextId++)
-      comp._reset()
-      return comp.render(el, props)
+    this.render = function(){
+      let _nextId = 0
+      function el(component, props){
+        const comp = new component(Object.assign({_root}, props))
+        return _registerComponent(comp, _nextId++)._reset().render(el, props)
+      }
+      element.innerHTML = el(component, props)
     }
-    this.element.innerHTML = el(this.component, this.props)
+    _root.render()
   }
 }
 
 export class Component {
   constructor(props) {
     this.state = {}
-    this.props = props
-    this._eventRegister = []
-    this.callMethod.bind(this)
-  }
-  _setId(_id){
-    this._id = _id
-    return this
-  }
-  _reset(){
-    this._nextEventId = 0
-  }
-  setState(thunk, callback = () => {}){
-    this.state = Object.assign({}, this.state, thunk(this.state))
-    callback(this.state)
-    this.props._root.render()
-  }
-  callMethod(method, props){
-    const _id = this._nextEventId++
-    this._eventRegister[_id] = this._eventRegister[_id] || props
-    return `document.Mulan._event(${[this.props._root._id, this._id, `"${method}"`, _id, 'this']})`
+    const _component = this
+    const _eventRegister = this._eventRegister = []
+    let _id, _nextEventId
+    this._setId = function(id){
+      _id = id
+      return _component
+    }
+    this._reset = function(){
+      _nextEventId = 0
+      return _component
+    }
+    this.callMethod = function(method, methodProps){
+      const _eventId = _nextEventId++
+      _eventRegister[_eventId] = _eventRegister[_eventId] || methodProps
+      return `document.Mulan._event(${[props._root._id, _id, `"${method}"`, _eventId, 'this']})`
+    }
+    this.setState = function(thunk, callback = () => {}){
+      _component.state = Object.assign({}, _component.state, thunk(_component.state))
+      callback(_component.state)
+      props._root.render()
+    }
   }
 }
 
