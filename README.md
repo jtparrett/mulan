@@ -1,6 +1,9 @@
 # Mulan Js
 Native es6 Component Library
 
+`npm install mulan --save`
+`https://cdn.jsdelivr.net/npm/mulan/index.js`
+
 ```
 import {Root,Component} from 'mulan'
 
