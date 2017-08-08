@@ -14,17 +14,28 @@ export class Root {
     this.component = component
     this.props = props
     this._componentRegister = []
+    this._registerComponent.bind(this)
     this.render()
+  }
+  _registerComponent(component, _id){
+    if(this._componentRegister[_id]){
+      if(this._componentRegister[_id].constructor === component.constructor){
+        return this._componentRegister[_id]
+      } else {
+        return this._registerComponent(component, _id + 0.1)
+      }
+    } else {
+      return this._componentRegister[_id] = component._setId(_id)
+    }
   }
   render(){
     const _root = this
     let nextId = 0
     function el(component, props){
-      const _id = nextId++
-      const comp = _root._componentRegister[_id] = (_root._componentRegister[_id] || new component(Object.assign({_id,_root}, props)))
+      const comp = _root._registerComponent(new component(Object.assign({_root}, props)), nextId++)
+      comp._reset()
       return comp.render(el, props)
     }
-    this._componentRegister.forEach(comp => comp._reset())
     this.element.innerHTML = el(this.component, this.props)
   }
 }
@@ -34,8 +45,11 @@ export class Component {
     this.state = {}
     this.props = props
     this._eventRegister = []
-    this._reset()
     this.callMethod.bind(this)
+  }
+  _setId(_id){
+    this._id = _id
+    return this
   }
   _reset(){
     this._nextEventId = 0
@@ -47,7 +61,7 @@ export class Component {
   callMethod(method, props){
     const _id = this._nextEventId++
     this._eventRegister[_id] = this._eventRegister[_id] || props
-    return `document.Mulan._event(${[this.props._root._id, this.props._id, `"${method}"`, _id, 'this']})`
+    return `document.Mulan._event(${[this.props._root._id, this._id, `"${method}"`, _id, 'this']})`
   }
 }
 
