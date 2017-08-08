@@ -1,9 +1,14 @@
-window._rootRegister = []
+document.Mulan = document.Mulan || {
+  _rootRegister: [],
+  _event: function(root, component, method, event, target){
+    return this._rootRegister[root]._componentRegister[component][method](target, this._rootRegister[root]._componentRegister[component]._eventRegister[event])
+  }
+}
 
 export class Root {
   constructor(element, component, props) {
-    const _id = _rootRegister.length
-    _rootRegister[_id] = this
+    const _id = document.Mulan._rootRegister.length
+    document.Mulan._rootRegister[_id] = this
     this._id = _id
     this.element = element
     this.component = component
@@ -42,6 +47,10 @@ export class Component {
   callMethod(method, props){
     const _id = this._nextEventId++
     this._eventRegister[_id] = this._eventRegister[_id] || props
-    return `window._rootRegister[${this.props._root._id}]._componentRegister[${this.props._id}]['${method}'](${['this', `window._rootRegister[${this.props._root._id}]._componentRegister[${this.props._id}]._eventRegister[${_id}]`]})`
+    return `document.Mulan._event(${[this.props._root._id, this.props._id, `"${method}"`, _id, 'this']})`
   }
+}
+
+export default { 
+  Root, Component 
 }

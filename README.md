@@ -2,6 +2,8 @@
 Native es6 Component Library
 
 ```
+import {Root,Component} from 'mulan'
+
 class Item extends Component {
   constructor(props){
     super(props)
@@ -11,7 +13,6 @@ class Item extends Component {
   }
 
   onClick(target, props){
-    console.log(target, props)
     this.setState(state => {
       return {
         isSet: props.isSet
@@ -21,7 +22,9 @@ class Item extends Component {
 
   render(el, props){
     return `
-      <li onClick=${this.callMethod('onClick', { isSet: true })}>${props.index}</li>
+      <li onClick=${this.callMethod('onClick', { 
+        isSet: true 
+      })}>${props.copy}</li>
     `
   }
 }
@@ -30,7 +33,7 @@ class App extends Component {
   render(el, props){
     return `
       <h1>${props.title}</h1>
-      <ul>${el(Item, { index: 1 })}</ul>
+      <ul>${el(Item, { copy: 'Testing Props.' })}</ul>
     `
   }
 }

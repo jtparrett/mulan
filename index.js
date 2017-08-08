@@ -8,14 +8,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-window._rootRegister = [];
+document.Mulan = document.Mulan || {
+  _rootRegister: [],
+  _event: function _event(root, component, method, event, target) {
+    return this._rootRegister[root]._componentRegister[component][method](target, this._rootRegister[root]._componentRegister[component]._eventRegister[event]);
+  }
+};
 
 var Root = exports.Root = function () {
   function Root(element, component, props) {
     _classCallCheck(this, Root);
 
-    var _id = _rootRegister.length;
-    _rootRegister[_id] = this;
+    var _id = document.Mulan._rootRegister.length;
+    document.Mulan._rootRegister[_id] = this;
     this._id = _id;
     this.element = element;
     this.component = component;
@@ -71,9 +76,13 @@ var Component = exports.Component = function () {
     value: function callMethod(method, props) {
       var _id = this._nextEventId++;
       this._eventRegister[_id] = this._eventRegister[_id] || props;
-      return 'window._rootRegister[' + this.props._root._id + ']._componentRegister[' + this.props._id + '][\'' + method + '\'](' + ['this', 'window._rootRegister[' + this.props._root._id + ']._componentRegister[' + this.props._id + ']._eventRegister[' + _id + ']'] + ')';
+      return 'document.Mulan._event(' + [this.props._root._id, this.props._id, '"' + method + '"', _id, 'this'] + ')';
     }
   }]);
 
   return Component;
 }();
+
+exports.default = {
+  Root: Root, Component: Component
+};
