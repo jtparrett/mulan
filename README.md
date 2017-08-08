@@ -1,11 +1,28 @@
 # Mulan Js
 Native es6 Component Library
 
+### Npm Installation
 ```npm install mulan --save```
+
+### CDN
 ```https://cdn.jsdelivr.net/npm/mulan/index.js```
 
+### Root API
+```new Root(DOM Node, component, object)```
+To be used when rendering a component to a DOM Node. Takes a DOM Node, the component to render and a props object.
 
-### Example Component
+### Component API
+```this.setState(func, func)```
+Takes a function that must return an object, and a callback; which is called before the root component re-renders.
+
+```this.callMethod(string, object)```
+Takes the method name and a props object. This is used when an event needs to be added to a DOM node.
+
+```render(func, object)```
+Component method which must return a HTML string. Provides a function to create sub-components and a props object.
+
+
+#### Example:
 ```
 import {Root,Component} from 'mulan'
 

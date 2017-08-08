@@ -54,8 +54,9 @@ export class Component {
   _reset(){
     this._nextEventId = 0
   }
-  setState(thunk){
+  setState(thunk, callback = () => {}){
     this.state = Object.assign({}, this.state, thunk(this.state))
+    callback(this.state)
     this.props._root.render()
   }
   callMethod(method, props){

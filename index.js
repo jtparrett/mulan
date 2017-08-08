@@ -84,7 +84,10 @@ var Component = exports.Component = function () {
   }, {
     key: 'setState',
     value: function setState(thunk) {
+      var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
       this.state = Object.assign({}, this.state, thunk(this.state));
+      callback(this.state);
       this.props._root.render();
     }
   }, {
