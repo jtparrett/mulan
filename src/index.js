@@ -12,7 +12,7 @@ export class Root {
     const _componentRegister = this._componentRegister = []
     function _registerComponent(component, _id){
       if(_componentRegister[_id] && _componentRegister[_id].constructor !== component.constructor){
-        return _registerComponent(component, _id+0.1)
+        return _registerComponent(component, _id+0.01)
       }
       return _componentRegister[_id] = (_componentRegister[_id] || component._setId(_id))
     }
