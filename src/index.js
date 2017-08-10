@@ -18,9 +18,10 @@ export class Root {
     }
     this.render = function(){
       let _nextId = 0
-      function el(component, props){
-        const comp = new component(Object.assign({_root}, props))
-        return _registerComponent(comp, _nextId++)._reset().render(el, props)
+      function el(component, props, children){
+        const _props = Object.assign({}, props, {_root,children})
+        const comp = new component(_props)
+        return _registerComponent(comp, _nextId++)._reset().render(el, _props, children)
       }
       element.innerHTML = el(component, props)
     }
@@ -31,6 +32,7 @@ export class Root {
 export class Component {
   constructor(props) {
     this.state = {}
+    this.props = props
     const _component = this
     const _eventRegister = this._eventRegister = []
     let _id, _nextEventId
@@ -45,7 +47,7 @@ export class Component {
     this.callMethod = function(method, methodProps){
       const _eventId = _nextEventId++
       _eventRegister[_eventId] = _eventRegister[_eventId] || methodProps
-      return `document.Mulan._event(${[props._root._id, _id, `"${method}"`, _eventId, 'this']})`
+      return `'return document.Mulan._event(${[props._root._id, _id, `"${method}"`, _eventId, 'this']})'`
     }
     this.setState = function(thunk, callback = () => {}){
       _component.state = Object.assign({}, _component.state, thunk(_component.state))

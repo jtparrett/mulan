@@ -27,9 +27,10 @@ var Root = exports.Root = function Root(element, component, props) {
   }
   this.render = function () {
     var _nextId = 0;
-    function el(component, props) {
-      var comp = new component(Object.assign({ _root: _root }, props));
-      return _registerComponent(comp, _nextId++)._reset().render(el, props);
+    function el(component, props, children) {
+      var _props = Object.assign({}, props, { _root: _root, children: children });
+      var comp = new component(_props);
+      return _registerComponent(comp, _nextId++)._reset().render(el, _props, children);
     }
     element.innerHTML = el(component, props);
   };
@@ -40,6 +41,7 @@ var Component = exports.Component = function Component(props) {
   _classCallCheck(this, Component);
 
   this.state = {};
+  this.props = props;
   var _component = this;
   var _eventRegister = this._eventRegister = [];
   var _id = void 0,
@@ -55,7 +57,7 @@ var Component = exports.Component = function Component(props) {
   this.callMethod = function (method, methodProps) {
     var _eventId = _nextEventId++;
     _eventRegister[_eventId] = _eventRegister[_eventId] || methodProps;
-    return 'document.Mulan._event(' + [props._root._id, _id, '"' + method + '"', _eventId, 'this'] + ')';
+    return '\'return document.Mulan._event(' + [props._root._id, _id, '"' + method + '"', _eventId, 'this'] + ')\'';
   };
   this.setState = function (thunk) {
     var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
