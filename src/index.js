@@ -21,7 +21,7 @@ export class Root {
       function el(component, props, children){
         const _props = Object.assign({}, props, {_root,children})
         const comp = new component(_props)
-        return _registerComponent(comp, _nextId++)._reset().render(el, _props, children)
+        return _registerComponent(comp, _nextId++)._reset(_props).render(el, _props, children)
       }
       element.innerHTML = el(component, props)
     }
@@ -40,8 +40,9 @@ export class Component {
       _id = id
       return _component
     }
-    this._reset = function(){
+    this._reset = function(_props){
       _nextEventId = 0
+      _component.props = _props
       return _component
     }
     this.callMethod = function(method, methodProps){

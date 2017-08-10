@@ -18,7 +18,6 @@ Takes the method name and a props object. This is used when an event needs to be
 ```render(func, object, children)```
 Component method which must return a HTML string. Provides a function to create sub-components and a props object.
 
-
 #### Example:
 ```
 import {Root,Component} from 'mulan'

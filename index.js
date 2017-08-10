@@ -30,7 +30,7 @@ var Root = exports.Root = function Root(element, component, props) {
     function el(component, props, children) {
       var _props = Object.assign({}, props, { _root: _root, children: children });
       var comp = new component(_props);
-      return _registerComponent(comp, _nextId++)._reset().render(el, _props, children);
+      return _registerComponent(comp, _nextId++)._reset(_props).render(el, _props, children);
     }
     element.innerHTML = el(component, props);
   };
@@ -50,8 +50,9 @@ var Component = exports.Component = function Component(props) {
     _id = id;
     return _component;
   };
-  this._reset = function () {
+  this._reset = function (_props) {
     _nextEventId = 0;
+    _component.props = _props;
     return _component;
   };
   this.callMethod = function (method, methodProps) {
