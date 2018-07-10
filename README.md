@@ -1,66 +1,67 @@
 # Mulan Js
 Native es6 Component Library
 
-### Npm Installation
+### Installation
 ```npm install mulan --save```
 
 ### Root API
-```new Root(DOM Node, component, object)```
-To be used when rendering a component to a DOM Node. Takes a DOM Node, the component to render and a props object.
+```renderNode(DOM Node, Function)```
+To be used when rendering a template literal to a DOM Node.
+Takes a DOM Node and a function which must return a template literal string.
+Returns the root nodes children.
 
-### Component API
-```this.setState(func, func)```
-Takes a function that must return an object, and a callback; which is called before the root component re-renders.
+```encode(Object)```
+To be used when storing data against a Dom Node.
+Takes an Object to be encoded.
+Returns the encoded Object.
 
-```this.callMethod(string, object)```
-Takes the method name and a props object. This is used when an event needs to be added to a DOM node.
-
-```render(func, object, children)```
-Component method which must return a HTML string. Provides a function to create sub-components and a props object.
+```decode(encoded data)```
+To be used when decoding previously encoded object.
+Takes encoded object.
+Returns the decoded Object.
 
 #### Example:
 ```
-import {Root,Component} from 'mulan'
+import {renderNode, encode, decode} from 'mulan'
+import delegate from 'delegate-events'
 
-class Item extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      isSet: false
-    }
-  }
+const Results = (root) => {
+  delegate.bind(root, '[data-item]', 'click', (e) => {
+    const {itemId} = decode(e.target.dataset.item)
+    console.log(itemId)
+  })
 
-  onClick(target, props){
-    this.setState(state => {
-      return {
-        isSet: props.isSet
-      }
-    })
-  }
-
-  render(el, props, children){
-    return `
-      <li onClick=${this.callMethod('onClick', { 
-        isSet: true 
-      })}>${props.copy} ${children && children()}</li>
-    `
-  }
+  return `
+    <ul>
+      <li data-item="${encode({ itemId: 1 })}">1</li>
+      <li data-item="${encode({ itemId: 2 })}">2</li>
+      <li data-item="${encode({ itemId: 3 })}">3</li>
+    </ul>
+  `
 }
 
-class App extends Component {
-  render(el, props, children){
-    return `
-      <h1>${props.title}</h1>
-      <ul>${el(Item, { copy: 'Testing Props.' }, () => `
-        <a href="#">Child Component</a>
-      `)}</ul>
-    `
-  }
+const Things = (root) => (`
+  <p>This is some things</p>
+`)
+
+const App = ({title}) => (root) => {
+  
+  delegate.bind(root, '#button', 'click', () => {
+    renderNode(document.getElementById('result'), Results)
+  })
+
+  return `
+    <div>
+      <h1>${title}</h1>
+      <button id="button">Click Me!</button>
+      <div id="result"></div>
+
+      ${Things(root)}
+    </div>
+  `
 }
 
-new Root(document.getElementById('app'), App, {
-  title: 'Mulan Test App'
-})
+renderNode(document.getElementById('app'), App({ title: 'So this is Mulan' }))
 ```
 
 ![Mulan](mulan.jpg)
