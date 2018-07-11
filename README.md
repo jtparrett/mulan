@@ -4,7 +4,7 @@ Native es6 Component Library
 ### Installation
 ```npm install mulan --save```
 
-### Root API
+### API
 ```renderNode(DOM Node, Function)```
 To be used when rendering a template literal to a DOM Node.
 Takes a DOM Node and a function which must return a template literal string.
@@ -45,7 +45,6 @@ const Things = (root) => (`
 `)
 
 const App = ({title}) => (root) => {
-  
   delegate.bind(root, '#button', 'click', () => {
     renderNode(document.getElementById('result'), Results)
   })
@@ -61,7 +60,7 @@ const App = ({title}) => (root) => {
   `
 }
 
-renderNode(document.getElementById('app'), App({ title: 'So this is Mulan' }))
+renderNode(document.getElementById('app'), App({ title: 'This is Mulan' }))
 ```
 
 ![Mulan](mulan.jpg)
