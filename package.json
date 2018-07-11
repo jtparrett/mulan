@@ -1,9 +1,9 @@
 {
   "name": "mulan",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "",
   "scripts": {
-    "build": "browserify src/index.js -o index.js -t [babelify]"
+    "build": "babel src/index.js -o index.js"
   },
   "repository": {
     "type": "git",
@@ -17,8 +17,6 @@
   "homepage": "https://github.com/jtparrett/mulan#readme",
   "devDependencies": {
     "babel-cli": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babelify": "^8.0.0",
-    "browserify": "^16.2.2"
+    "babel-preset-env": "^1.7.0"
   }
 }
