@@ -1,74 +1,25 @@
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-document.Mulan = document.Mulan || {
-  _rootRegister: [],
-  _event: function _event(root, component, method, event, target) {
-    return this._rootRegister[root]._componentRegister[component][method](target, this._rootRegister[root]._componentRegister[component]._eventRegister[event]);
+var renderNode = exports.renderNode = function renderNode(el, template) {
+  if (!el) {
+    return false;
   }
+  el.innerHTML = template(el).replace(/undefined|false/g, '');
+  return el.childNodes;
 };
 
-var Root = exports.Root = function Root(element, component, props) {
-  _classCallCheck(this, Root);
-
-  var _id = this._id = document.Mulan._rootRegister.length;
-  var _root = document.Mulan._rootRegister[_id] = this;
-  var _componentRegister = this._componentRegister = [];
-  function _registerComponent(component, _id) {
-    if (_componentRegister[_id] && _componentRegister[_id].constructor !== component.constructor) {
-      return _registerComponent(component, _id + 0.01);
-    }
-    return _componentRegister[_id] = _componentRegister[_id] || component._setId(_id);
-  }
-  this.render = function () {
-    var _nextId = 0;
-    function el(component, props, children) {
-      var _props = Object.assign({}, props, { _root: _root, children: children });
-      var comp = new component(_props);
-      return _registerComponent(comp, _nextId++)._reset(_props).render(el, _props, children);
-    }
-    element.innerHTML = el(component, props);
-  };
-  _root.render();
+var encode = exports.encode = function encode(data) {
+  return encodeURIComponent(JSON.stringify(data));
 };
 
-var Component = exports.Component = function Component(props) {
-  _classCallCheck(this, Component);
-
-  this.state = {};
-  this.props = props;
-  var _component = this;
-  var _eventRegister = this._eventRegister = [];
-  var _id = void 0,
-      _nextEventId = void 0;
-  this._setId = function (id) {
-    _id = id;
-    return _component;
-  };
-  this._reset = function (_props) {
-    _nextEventId = 0;
-    _component.props = _props;
-    return _component;
-  };
-  this.callMethod = function (method, methodProps) {
-    var _eventId = _nextEventId++;
-    _eventRegister[_eventId] = _eventRegister[_eventId] || methodProps;
-    return '\'return document.Mulan._event(' + [props._root._id, _id, '"' + method + '"', _eventId, 'this'] + ')\'';
-  };
-  this.setState = function (thunk) {
-    var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
-
-    _component.state = Object.assign({}, _component.state, thunk(_component.state));
-    callback(_component.state);
-    props._root.render();
-  };
+var decode = exports.decode = function decode(data) {
+  return JSON.parse(decodeURIComponent(data));
 };
 
-exports.default = {
-  Root: Root, Component: Component
-};
+exports.default = { renderNode: renderNode, encode: encode, decode: decode };
+
+},{}]},{},[1]);
