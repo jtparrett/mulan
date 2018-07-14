@@ -7,8 +7,10 @@ var renderNode = exports.renderNode = function renderNode(el, template) {
   if (!el) {
     return false;
   }
-  el.innerHTML = template(el).replace(/undefined|false/g, '');
-  return el.childNodes;
+  var root = el.cloneNode(false);
+  root.innerHTML = template(root).replace(/undefined|false/g, '');
+  el.parentNode.replaceChild(root, el);
+  return root;
 };
 
 var encode = exports.encode = function encode(data) {
