@@ -1,6 +1,6 @@
 {
   "name": "mulan",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "",
   "scripts": {
     "build": "babel src/index.js -o index.js"

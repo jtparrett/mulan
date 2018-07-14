@@ -1,7 +1,9 @@
-export const renderNode = (el, template) => {
+export const const renderNode = (el, template) => {
   if(!el){ return false }
-  el.innerHTML = template(el).replace(/undefined|false/g, '')
-  return el.childNodes
+  const root = el.cloneNode(false)
+  root.innerHTML = template(root).replace(/undefined|false/g, '')
+  el.parentNode.replaceChild(root, el)
+  return root
 }
 
 export const encode = (data) => encodeURIComponent(JSON.stringify(data))
