@@ -3,22 +3,22 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var renderNode = exports.renderNode = function renderNode(el, template) {
+var createRenderer = exports.createRenderer = function createRenderer(el, component) {
   if (!el) {
     return false;
   }
   var root = el.cloneNode(false);
-  root.innerHTML = template(root).replace(/undefined|false/g, '');
+  var cache = void 0;
+  var render = function render(template) {
+    if (template !== cache) {
+      root.innerHTML = template.replace(/undefined|false|NaN|null/g, '');
+      cache = template;
+    }
+    return root;
+  };
+  component(render, root);
   el.parentNode.replaceChild(root, el);
-  return root;
+  return { render: render, root: root };
 };
 
-var encode = exports.encode = function encode(data) {
-  return encodeURIComponent(JSON.stringify(data));
-};
-
-var decode = exports.decode = function decode(data) {
-  return JSON.parse(decodeURIComponent(data));
-};
-
-exports.default = { renderNode: renderNode, encode: encode, decode: decode };
+exports.default = { renderNode: renderNode };
