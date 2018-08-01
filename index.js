@@ -21,4 +21,4 @@ var createRenderer = exports.createRenderer = function createRenderer(el, compon
   return { render: render, root: root };
 };
 
-exports.default = { renderNode: renderNode };
+exports.default = { createRenderer: createRenderer };

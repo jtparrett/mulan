@@ -14,4 +14,4 @@ export const createRenderer = (el, component) => {
   return {render, root}
 }
 
-export default { renderNode }
+export default { createRenderer }
