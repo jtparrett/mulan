@@ -16,8 +16,8 @@ var createRenderer = exports.createRenderer = function createRenderer(el, compon
     }
     return root;
   };
-  component(render, root);
   el.parentNode.replaceChild(root, el);
+  component(render, root);
   return { render: render, root: root };
 };
 

@@ -9,8 +9,8 @@ export const createRenderer = (el, component) => {
     }
     return root
   }
-  component(render, root)
   el.parentNode.replaceChild(root, el)
+  component(render, root)
   return {render, root}
 }
 
